@@ -1,0 +1,2 @@
+0 handsome
+1 ugly
