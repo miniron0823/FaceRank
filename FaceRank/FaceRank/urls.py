@@ -19,6 +19,6 @@ from django.urls import path
 from appFaceRank import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('getResult', views.getPicture),
+    path('getResult', views.getPicture,name = 'getResult'),
     url(r'^$', views.index),
 ]

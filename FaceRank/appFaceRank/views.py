@@ -8,7 +8,7 @@ from PIL import Image, ImageOps
 import numpy as np
 import cv2
 import base64, io
-from datauri import DataURI
+#from datauri import DataURI
 
 
 def index(request):
@@ -19,18 +19,20 @@ def index(request):
 
 
 def getPicture(request):
-    
+        
     search_key = request.GET['search_key']
     imageUrl = {'search_key': search_key}
+    print('tttttttttt')
+    print(imageUrl)
     im = Image.open(io.BytesIO(base64.b64decode(str(imageUrl).split(',')[1])))
-    im.save("ttttttsssss.jpg")
+    #im.save("ttttttsssss.jpg") 
     context = {}
     #print(type(imgdata))
     #image = Image.open(context)
     #print(context)
     #sample_image = cv2.imread(context)
     
-    #getImage(context)
+    getImage(im)
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 
@@ -38,7 +40,8 @@ def getImage(imgName):
     img = []
 
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-    sample_image = cv2.imread('btsjpg.jpg')
+    sample_image = np.array(imgName)#cv2.imread('btsjpg.jpg')
+    
     gray = cv2.cvtColor(sample_image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray)
     bigValue = -9999999
@@ -60,7 +63,7 @@ def getImage(imgName):
         #FaceFileName = "unknowfaces/face_" + str(y) + ".jpg"
         #cv2.imwrite(FaceFileName, sub_face)
     rank = idx + 1
-    print('1등은 몇번째 사진인가효???'+rank)
+    #print('1등은 몇번째 사진인가효???'+rank)
     #cv2.imshow('sample', sample_image)
     # cv2.waitKey()
     # print(img)
@@ -107,5 +110,5 @@ def exeTeachableMachine(image):
 
 if __name__ == '__main__':
     getImage('btsjpg.jpg')
-    exeTeachableMachine('sample.jpg')
+    #exeTeachableMachine('sample.jpg')
     # exeTeachableMachine(getImage('btsjpg.jpg'))
