@@ -2,7 +2,6 @@ import tensorflow.keras
 from PIL import Image, ImageOps
 import numpy as np
 import cv2
-https://github.com/miniron0823/FaceRank.git
 
 def getImage(imgName):
 
@@ -10,6 +9,7 @@ def getImage(imgName):
 
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     sample_image = cv2.imread('btsjpg.jpg')
+
     gray = cv2.cvtColor(sample_image, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray)
     bigValue = -9999999
@@ -31,7 +31,7 @@ def getImage(imgName):
         #FaceFileName = "unknowfaces/face_" + str(y) + ".jpg"
         #cv2.imwrite(FaceFileName, sub_face)
     rank = idx + 1
-    print('1등은 몇번째 사진인가효???'+rank)
+    #print('1등은 몇번째 사진인가효???'+rank)
     #cv2.imshow('sample', sample_image)
     # cv2.waitKey()
     # print(img)

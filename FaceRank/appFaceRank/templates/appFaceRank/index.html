@@ -127,6 +127,11 @@
                         $('.image-title').html(input.files[0].name);
                     };
                     reader.readAsDataURL(input.files[0]);
+                    console.log(input.files[0]);
+                    //sendPicture();
+
+
+
                 } else {
                     removeUpload();
                 }
@@ -180,24 +185,23 @@
             }
             
             function sendPicture(){
+                var src = jQuery('#face-image').attr('src');
+                //alert(src);
                 $.ajax({
-                    url:"https://facerank.run.goorm.io/getResult",
-                    dataType:'json',
+                    url:"{%url 'getResult'%}",  
+                    data : { 'search_key':src},
                     success:function(data){
                         var str = '';
                         alert('ajax통신성공!!');
-                        alert(data);
-                        for(var name in data){
-                            str += '<li>'+'1.KEY: '+name+'</li>';
-                            str += '<li>'+'2.VALUE: '+data[name]+'</li>';
-                        }
-                        alert(str)
+                        //alert(data);
+                        
+                        //alert(str)
                         $('#example').html('<ul>'+str+'</ul>');
                     },
                     error: function(request, status, error){ // 통신 실패시 - 로그인 페이지 리다이렉트
                         alert("ajax통신실패...")
-                        alert(error)
-                        alert(request)
+                        //alert(error)
+                        //alert(request)
                         //  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                     },
                 })
