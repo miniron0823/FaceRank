@@ -8,7 +8,7 @@ from PIL import Image, ImageOps
 import numpy as np
 import cv2
 import base64, io
-from datauri import DataURI
+#from datauri import DataURI
 
 
 def index(request):
