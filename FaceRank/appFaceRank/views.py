@@ -19,20 +19,17 @@ def index(request):
 
 
 def getPicture(request):
-        
-    search_key = request.GET['search_key']
-    imageUrl = {'search_key': search_key}
-    print('tttttttttt')
-    print(imageUrl)
+
+    imageUrl = request.POST['search_key']
     im = Image.open(io.BytesIO(base64.b64decode(str(imageUrl).split(',')[1])))
     #im.save("ttttttsssss.jpg") 
     context = {}
-    #print(type(imgdata))
-    #image = Image.open(context)
-    #print(context)
-    #sample_image = cv2.imread(context)
     
-    getImage(im)
+    #image = Image.open(context)
+    
+    #sample_image = cv2.imread(context)
+
+    #getImage(im)
     return HttpResponse(json.dumps(context), content_type="application/json")
 
 

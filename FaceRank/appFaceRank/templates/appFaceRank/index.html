@@ -65,6 +65,7 @@
 
         <div>Teachable Machine Image Model</div>
         <button type="button" onclick="init()">Start</button>
+        {% csrf_token %}
         <button type="button" onclick="sendPicture()">예측</button>
         <script
             class="jsbin"
@@ -188,8 +189,9 @@
                 var src = jQuery('#face-image').attr('src');
                 //alert(src);
                 $.ajax({
-                    url:"{%url 'getResult'%}",  
-                    data : { 'search_key':src},
+                    url:"{%url 'getResult'%}", 
+                    type : 'POST',
+                    data : { 'search_key':src,csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),},
                     success:function(data){
                         var str = '';
                         alert('ajax통신성공!!');
@@ -206,6 +208,36 @@
                     },
                 })
             }
+        </script>
+        <script>
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            var csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
         </script>
     </body>
     <!-- Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
