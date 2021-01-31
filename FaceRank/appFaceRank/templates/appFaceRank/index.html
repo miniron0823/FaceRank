@@ -20,7 +20,7 @@
 
     <body>
         <nav class="navbar navbar-expand-lg navbar-light nav-distance">
-            <a class="navbar-brand" href="#">동물상 테스트</a>
+            <a class="navbar-brand" href="#">인공지능 얼굴순위 BETA</a>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -32,6 +32,7 @@
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <!--
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
@@ -53,10 +54,11 @@
                     </li>
                 </ul>
             </div>
+            -->
         </nav>
         <section class="section">
-            <h1 class="title">인공지능 동물상 테스트 (남자)</h1>
-            <h2 class="subtitle">나는 어떤 동물과 닮았을까?</h2>
+            <h1 class="title">인공지능 얼굴순위 테스트 (남자)</h1>
+            <h2 class="subtitle">누가제일 잘생겼을까?</h2>
         </section>
         <section class="youtube">
             <div class="container mt-5 youtube-cover d-flex flex-row-reverse">
@@ -191,14 +193,15 @@
                 $.ajax({
                     url:"{%url 'getResult'%}", 
                     type : 'POST',
-                    data : { 'search_key':src,csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),},
+                    data : { 'search_key':src, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),},
                     success:function(data){
                         var str = '';
                         alert('ajax통신성공!!');
                         //alert(data);
-                        
+                        debugger;
                         //alert(str)
                         $('#example').html('<ul>'+str+'</ul>');
+                        $('#face-image').attr('src','data:image/jpeg;base64,' + data.src);
                     },
                     error: function(request, status, error){ // 통신 실패시 - 로그인 페이지 리다이렉트
                         alert("ajax통신실패...")
@@ -238,6 +241,7 @@
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
                 }
+            });
         </script>
     </body>
     <!-- Copyright (c) 2020 by Aaron Vanston (https://codepen.io/aaronvanston/pen/yNYOXR)
