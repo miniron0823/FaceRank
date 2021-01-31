@@ -78,7 +78,7 @@ def getImage(imgName):
     #cv2.waitKey()
     # print('1등은 몇번째 사진인가효???'+str(rank))
 
-    # print(img)
+    # print(img)a
     # return img
     rgbImage = cv2.cvtColor(sample_image, cv2.COLOR_BGR2RGB)
     retval , image_buffer = cv2.imencode('.jpg', rgbImage)
