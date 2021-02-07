@@ -68,9 +68,11 @@ def getImage(imgName):
         # cv2.imwrite(FaceFileName, sub_face)'
         label = str(idx)
         Y = y - 10 if y - 10 > 10 else y + 10
+        rank.append([idx,result,x,Y])
 
     rank.sort(reverse=True)
     for i, val in enumerate(rank):
+        print(i)
         cv2.putText(sample_image, str(i+1), (rank[i][2], rank[i][3]),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
@@ -81,6 +83,7 @@ def getImage(imgName):
     # print(img)a
     # return img
     rgbImage = cv2.cvtColor(sample_image, cv2.COLOR_BGR2RGB)
+    #cv2.imshow()
     retval , image_buffer = cv2.imencode('.jpg', rgbImage)
     jpg_as_text = base64.b64encode(image_buffer)
     return jpg_as_text
@@ -110,7 +113,7 @@ def exeTeachableMachine(image):
     image_array = np.asarray(image)
 
     # display the resized image
-    # image.show()
+    #image.show()
 
     # Normalize the image
     normalized_image_array = (image_array.astype(np.float32) / 127.0) - 1
