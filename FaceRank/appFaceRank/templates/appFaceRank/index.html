@@ -11,6 +11,26 @@
     <title>AI 외모순위 테스트</title>
     <link rel="stylesheet" href="{% static 'css/style2.css' %}" />
     <link href="https://fonts.googleapis.com/css?family=Jua&amp;display=swap" rel="stylesheet">
+    <style>
+        .loading{
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
+            z-index: 1050;
+            font-size: 7ch;
+        }
+        .loadingBackground{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1040;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgb(255, 255, 255);
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light nav-distance">
@@ -39,13 +59,18 @@
     </section>
     {% csrf_token %}
     <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+           
+    <div class = 'loadingBackground'>
+        <!-- <img src="{% static 'img/loading.gif' %}" class = 'loading' id = 'loadingImg'/> -->
+        <div class="word loading" style ='z-index: 2000;'>LOADING...</div> 
+    </div>
     <div class="container file-upload">
         <div class="image-upload-wrap">
             <input class="file-upload-input" type="file" onchange="readURL(this);" accept="image/*" />
-            <div class="word" style ='display : none;'>LOADING...</div>
             <div class="overlay"></div>
             <div class="drag-text">
                 <img src="{% static 'img/upload.svg' %}" class="mt-5 pt-5 upload" />
+                
                 <h3 class="mb-5 pb-5 pt-4 upload-text">
                     얼굴 사진을 올려놓거나 눌러서 업로드하세요!
                 </h3>
@@ -55,8 +80,7 @@
             <img class="file-upload-image" id="face-image" src="#" alt="your image" />
             <div class="image-title-wrap">
                 <button type="button" onclick="removeUpload()" class="remove-image">
-                    Remove
-                    <span class="image-title">Uploaded Image</span>
+                    다른사진으로 재시도
                 </button>
             </div>
         </div>
@@ -91,19 +115,22 @@
                     $('.file-upload-image').attr('src', e.target.result);
                     $('.file-upload-content').show();
                     $('.image-title').html(input.files[0].name);
+                    sendPicture();
                 };
                 reader.readAsDataURL(input.files[0]);
                 console.log(input.files[0]);
-                sendPicture();
+                
             } else {
                 removeUpload();
             }
         }
 
         function removeUpload() {
-            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-            $('.file-upload-content').hide();
-            $('.image-upload-wrap').show();
+            window.location.reload();
+
+            //  $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+            //  $('.file-upload-content').hide();
+           //  $('.image-upload-wrap').show();
         }
         $('.image-upload-wrap').bind('dragover', function () {
             $('.image-upload-wrap').addClass('image-dropping');
@@ -112,7 +139,7 @@
             $('.image-upload-wrap').removeClass('image-dropping');
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
     <script type="text/javascript">
         // More API functions here:
         // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
@@ -122,14 +149,14 @@
 
         function sendPicture() {
             var src = jQuery('#face-image').attr('src');
-            //alert(src);
+            
             $.ajax({
                 url: "{%url 'getResult'%}",
                 type: 'POST',
                 data: { 'search_key': src, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(), },
                 success: function (data) {
                     var str = '';
-                    alert('ajax통신성공!!');
+                    //alert('ajax통신성공!!');
                     //alert(data);
                     
                     //alert(str)
@@ -144,7 +171,20 @@
                 },
             })
         }
+        
+        $(document).ajaxStart(function() {
+            // show loader on start
+            $('.loadingBackground').show();
+        }).ajaxStop(function() {
+            $('.loadingBackground').hide();
+        });
+
+
+      
+
     </script>
+    
+
     <script>
         function getCookie(name) {
             var cookieValue = null;
