@@ -59,6 +59,9 @@ def getImage(imgName):
         # test.show()
         result = exeTeachableMachine(PIL_image)
 
+
+
+
         # print(str(idx) + ',' + str(result[0][1]))
         # if bigValue < result[0][1]:
         #    bigValue = result[0][1]
@@ -71,18 +74,17 @@ def getImage(imgName):
         rank.append([idx,result,x,Y])
 
     rank.sort(reverse=True)
-    for i, val in enumerate(rank):
-        print(i)
-        cv2.putText(sample_image, str(i+1), (rank[i][2], rank[i][3]),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-
-    #cv2.imshow('face-image', sample_image)
-    #cv2.waitKey()
-    # print('1등은 몇번째 사진인가효???'+str(rank))
-
-    # print(img)a
-    # return img
-    rgbImage = cv2.cvtColor(sample_image, cv2.COLOR_BGR2RGB)
+    fontpath = "fonts/gulim.ttc"
+    font = ImageFont.truetype(fontpath, 30)
+    img_pil = Image.fromarray(sample_image)
+    draw = ImageDraw.Draw(img_pil)
+    for i, val in enumerate(rank): 
+        draw.text((rank[i][2], rank[i][3]-30), str(i+1)+'위!', font=font ,fill=(255,0,0))
+        #cv2.putText(sample_image, str(i+1)+'위', (rank[i][2], rank[i][3]), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 2)
+                    
+   
+    imgNa = np.array(img_pil)
+    rgbImage = cv2.cvtColor(imgNa, cv2.COLOR_BGR2RGB)
     #cv2.imshow()
     retval , image_buffer = cv2.imencode('.jpg', rgbImage)
     jpg_as_text = base64.b64encode(image_buffer)
